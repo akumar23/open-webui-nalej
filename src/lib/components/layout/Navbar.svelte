@@ -13,7 +13,7 @@
 	export let title: string = $WEBUI_NAME;
 	export let shareEnabled: boolean = false;
 
-	export let tags = [];
+	export let tags: string[] = [];
 	export let addTag: Function;
 	export let deleteTag: Function;
 
@@ -21,6 +21,10 @@
 
 	let tagName = '';
 	let showTagInput = false;
+
+	function handleClick(event: MouseEvent) {
+		initNewChat();
+	}
 
 	const shareChat = async () => {
 		const chat = (await getChatById(localStorage.token, $chatId)).chat;
@@ -36,7 +40,7 @@
 			(event) => {
 				if (event.origin !== url) return;
 				if (event.data === 'loaded') {
-					tab.postMessage(
+					tab?.postMessage(
 						JSON.stringify({
 							chat: chat,
 							modelfiles: $modelfiles.filter((modelfile) => chat.models.includes(modelfile.tagName))
@@ -53,7 +57,7 @@
 		const chat = (await getChatById(localStorage.token, $chatId)).chat;
 		console.log('download', chat);
 
-		const chatText = chat.messages.reduce((a, message, i, arr) => {
+		const chatText = chat.messages.reduce((a: any, message: { role: string; content: any; }, i: any, arr: any) => {
 			return `${a}### ${message.role.toUpperCase()}\n${message.content}\n\n`;
 		}, '');
 
@@ -80,7 +84,7 @@
 				<button
 					id="new-chat-button"
 					class=" cursor-pointer p-1.5 flex dark:hover:bg-gray-700 rounded-lg transition"
-					on:click={initNewChat}
+					on:click={handleClick}
 				>
 					<div class=" m-auto self-center">
 						<svg
