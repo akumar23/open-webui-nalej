@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { toast } from 'svelte-sonner';
-	import { openDB, deleteDB } from 'idb';
+	import { openDB, deleteDB, type IDBPDatabase } from 'idb';
 	import fileSaver from 'file-saver';
 	const { saveAs } = fileSaver;
 
@@ -38,8 +38,8 @@
 	let ollamaVersion = '';
 	let loaded = false;
 
-	let DB = null;
-	let localDBChats = [];
+	let DB: IDBPDatabase<unknown> | null = null;
+	let localDBChats: string | any[] = [];
 
 	let showShortcuts = false;
 
@@ -108,19 +108,19 @@
 
 			console.log();
 
-			await models.set(await getModels());
+			models.set(await getModels());
 			await tick();
 
-			await settings.set(JSON.parse(localStorage.getItem('settings') ?? '{}'));
+			settings.set(JSON.parse(localStorage.getItem('settings') ?? '{}'));
 
-			await modelfiles.set(await getModelfiles(localStorage.token));
-			await prompts.set(await getPrompts(localStorage.token));
-			await documents.set(await getDocs(localStorage.token));
-			await tags.set(await getAllChatTags(localStorage.token));
+			modelfiles.set(await getModelfiles(localStorage.token));
+			prompts.set(await getPrompts(localStorage.token));
+			documents.set(await getDocs(localStorage.token));
+			tags.set(await getAllChatTags(localStorage.token));
 
 			modelfiles.subscribe(async () => {
 				// should fetch models
-				await models.set(await getModels());
+				models.set(await getModels());
 			});
 
 			document.addEventListener('keydown', function (event) {
@@ -189,7 +189,7 @@
 			});
 
 			if ($user.role === 'admin') {
-				showChangelog.set(localStorage.version !== $config.version);
+				showChangelog.set(localStorage.version !== $config?.version);
 			}
 
 			await tick();
@@ -283,8 +283,8 @@
 										});
 										saveAs(blob, `chat-export-${Date.now()}.json`);
 
-										const tx = DB.transaction('chats', 'readwrite');
-										await Promise.all([tx.store.clear(), tx.done]);
+										const tx = DB?.transaction('chats', 'readwrite');
+										await Promise.all([tx?.store.clear(), tx?.done]);
 										await deleteDB('Chats');
 
 										localDBChats = [];

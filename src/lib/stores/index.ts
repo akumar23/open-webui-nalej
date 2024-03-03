@@ -3,8 +3,8 @@ import { writable } from 'svelte/store';
 
 // Backend
 export const WEBUI_NAME = writable(APP_NAME);
-export const config = writable(undefined);
-export const user = writable(undefined);
+export const config = writable<any>(undefined);
+export const user = writable<any>(undefined);
 
 // Frontend
 export const theme = writable('dark');
@@ -13,9 +13,9 @@ export const chatId = writable('');
 
 export const chats = writable([]);
 export const tags = writable([]);
-export const models = writable([]);
+export const models = writable<any []>([]);
 
-export const modelfiles = writable([]);
+export const modelfiles = writable<any []>([]);
 export const prompts = writable([]);
 export const documents = writable([
 	{
@@ -32,6 +32,6 @@ export const documents = writable([
 	}
 ]);
 
-export const settings = writable({});
+export const settings = writable<{fullScreenMode?: boolean}>({});
 export const showSettings = writable(false);
 export const showChangelog = writable(false);
