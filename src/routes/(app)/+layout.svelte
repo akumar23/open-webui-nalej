@@ -17,7 +17,6 @@
 
 	import {
 		user,
-		showSettings,
 		settings,
 		models,
 		modelfiles,
@@ -30,7 +29,6 @@
 	import { REQUIRED_OLLAMA_VERSION, WEBUI_API_BASE_URL } from '$lib/constants';
 	import { compareVersion } from '$lib/utils';
 
-	import SettingsModal from '$lib/components/chat/SettingsModal.svelte';
 	import Sidebar from '$lib/components/layout/Sidebar.svelte';
 	import ShortcutsModal from '$lib/components/chat/ShortcutsModal.svelte';
 	import ChangelogModal from '$lib/components/ChangelogModal.svelte';
@@ -310,7 +308,6 @@
 			class=" text-gray-700 dark:text-gray-100 bg-white dark:bg-gray-900 min-h-screen overflow-auto flex flex-row"
 		>
 			<Sidebar />
-			<SettingsModal bind:show={$showSettings} />
 			<ChangelogModal bind:show={$showChangelog} />
 			<slot />
 		</div>
