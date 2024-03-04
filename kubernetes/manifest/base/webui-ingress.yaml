@@ -1,20 +1,27 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-issuer
+    cert-manager.io/issue-temporary-certificate: "true"
+    acme.cert-manager.io/http01-edit-in-place: "true"
+    nalej.externaldns.ingress.class: nginx  
   name: open-webui-ingress
   namespace: open-webui
-  #annotations:
-    # Use appropriate annotations for your Ingress controller, e.g., for NGINX:
-    # nginx.ingress.kubernetes.io/rewrite-target: /
 spec:
+  ingressClassName: nginx
   rules:
-  - host: open-webui.minikube.local
-    http:
-      paths:
-      - path: /
-        pathType: Prefix
-        backend:
-          service:
-            name: open-webui-service
-            port:
-              number: 8080
+    - host: open-mosaiczammad1.test.nalej.io
+      http:
+        paths:
+          - backend:
+              service:
+                name: open-webui-service
+                port:
+                  number: 8080
+            path: /
+            pathType: ImplementationSpecific
+  tls:
+    - hosts:
+        - "open-mosaiczammad1.test.nalej.io"
+      secretName: wildcard-cert

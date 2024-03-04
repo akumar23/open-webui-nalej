@@ -2,7 +2,7 @@
 	import TagInput from './Tags/TagInput.svelte';
 	import TagList from './Tags/TagList.svelte';
 
-	export let tags = [];
+	export let tags: string[] = [];
 
 	export let deleteTag: Function;
 	export let addTag: Function;

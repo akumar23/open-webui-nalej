@@ -68,7 +68,6 @@
 		saveAs(blob, `chat-${chat.title}.txt`);
 	};
 </script>
-
 <ShareChatModal bind:show={showShareChatModal} {downloadChat} {shareChat} />
 <nav
 	id="nav"
